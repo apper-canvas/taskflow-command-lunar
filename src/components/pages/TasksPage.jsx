@@ -5,13 +5,9 @@ import TaskModal from "@/components/organisms/TaskModal";
 import Sidebar from "@/components/organisms/Sidebar";
 import TaskList from "@/components/organisms/TaskList";
 import Header from "@/components/organisms/Header";
-import categoriesData from "@/services/mockData/categories.json";
-import taskTemplatesData from "@/services/mockData/taskTemplates.json";
-import tasksData from "@/services/mockData/tasks.json";
 import { templateService } from "@/services/api/templateService";
 import { categoryService } from "@/services/api/categoryService";
 import { taskService } from "@/services/api/taskService";
-
 const TasksPage = ({ onRegisterKeyboardActions }) => {
   // Keyboard shortcut handlers
 const handleKeyboardShortcuts = useCallback((e) => {

@@ -31,7 +31,7 @@ const Header = ({ onAddTask, onSearch, totalTasks, completedTasks }) => {
             </div>
           </div>
           
-          <div className="flex items-center gap-4">
+<div className="flex items-center gap-4">
             {totalTasks > 0 && (
               <div className="hidden md:flex items-center gap-2 px-3 py-2 bg-surface rounded-lg">
                 <div className="w-8 h-8 rounded-full bg-gradient-to-r from-success to-emerald-500 flex items-center justify-center">

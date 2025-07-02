@@ -53,20 +53,21 @@ if (e.ctrlKey && e.key === 'd') {
   
   // URL params
   const { categoryId, priority } = useParams();
-  // Load initial data
-  const loadTasks = useCallback(async () => {
+// Load initial data
+  const loadTasks = useCallback(async (filters = {}) => {
     try {
       setTasksLoading(true)
       setTasksError(null)
-      const data = await taskService.getAll()
+      const data = await taskService.getAll(filters)
       setTasks(data)
+      setFilteredTasks(data) // Set filtered tasks directly since filtering is done server-side
     } catch (error) {
       setTasksError(error.message)
       toast.error('Failed to load tasks')
     } finally {
       setTasksLoading(false)
     }
-}, []);
+  }, []);
 
   const loadCategories = useCallback(async () => {
     try {
@@ -92,38 +93,33 @@ const loadTemplates = useCallback(async () => {
     }
   }, []);
 
-  // Filter tasks based on URL params and search
-useEffect(() => {
-    let filtered = [...tasks];
-    
-    // Filter by category
-    if (categoryId) {
-      filtered = filtered.filter(task => task.categoryId === parseInt(categoryId));
-    }
-    
-    // Filter by priority
-    if (priority) {
-      filtered = filtered.filter(task => task.priority === priority);
-    }
-    
-    // Filter by search query
-    if (searchQuery) {
-      const query = searchQuery.toLowerCase();
-      filtered = filtered.filter(task => 
-        task.title.toLowerCase().includes(query) ||
-        task.description.toLowerCase().includes(query)
-      );
-    }
-    
-    setFilteredTasks(filtered);
-  }, [tasks, categoryId, priority, searchQuery]);
-
-  // Load data on mount
+// Load data with filters based on URL params and search
   useEffect(() => {
-    loadTasks();
+    const filters = {};
+    
+    // Add category filter
+    if (categoryId) {
+      filters.categoryId = parseInt(categoryId);
+    }
+    
+    // Add priority filter
+    if (priority) {
+      filters.priority = priority;
+    }
+    
+    // Add search filter
+    if (searchQuery) {
+      filters.search = searchQuery;
+    }
+    
+    loadTasks(filters);
+  }, [categoryId, priority, searchQuery, loadTasks]);
+
+  // Load initial data and other services
+  useEffect(() => {
     loadCategories();
     loadTemplates();
-  }, [loadTasks, loadCategories, loadTemplates]);
+  }, [loadCategories, loadTemplates]);
 
   // Task operations
 const handleCreateTask = async (taskData) => {
@@ -218,7 +214,7 @@ const handleToggleComplete = async (taskId) => {
     }
   };
 
-  // Search handler
+// Search handler
   const handleSearch = (query) => {
     setSearchQuery(query);
   };

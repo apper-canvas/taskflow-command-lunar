@@ -7,26 +7,28 @@ import TaskList from '@/components/organisms/TaskList'
 import TaskModal from '@/components/organisms/TaskModal'
 import { taskService } from '@/services/api/taskService'
 import { categoryService } from '@/services/api/categoryService'
-
+import { templateService } from '@/services/api/templateService'
 const TasksPage = () => {
-  // Data state
+// Data state
   const [tasks, setTasks] = useState([])
   const [categories, setCategories] = useState([])
+  const [templates, setTemplates] = useState([])
   const [filteredTasks, setFilteredTasks] = useState([])
   
   // Loading and error states
   const [tasksLoading, setTasksLoading] = useState(true)
   const [categoriesLoading, setCategoriesLoading] = useState(true)
+  const [templatesLoading, setTemplatesLoading] = useState(true)
   const [tasksError, setTasksError] = useState(null)
   
   // UI state
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [editingTask, setEditingTask] = useState(null)
   const [searchQuery, setSearchQuery] = useState('')
+  const [taskFormRef, setTaskFormRef] = useState(null)
   
   // URL params
   const { categoryId, priority } = useParams()
-
   // Load initial data
   const loadTasks = useCallback(async () => {
     try {
@@ -42,7 +44,7 @@ const TasksPage = () => {
     }
   }, [])
 
-  const loadCategories = useCallback(async () => {
+const loadCategories = useCallback(async () => {
     try {
       setCategoriesLoading(true)
       const data = await categoryService.getAll()
@@ -51,6 +53,18 @@ const TasksPage = () => {
       toast.error('Failed to load categories')
     } finally {
       setCategoriesLoading(false)
+    }
+  }, [])
+
+  const loadTemplates = useCallback(async () => {
+    try {
+      setTemplatesLoading(true)
+      const data = await templateService.getAll()
+      setTemplates(data)
+    } catch (error) {
+      toast.error('Failed to load templates')
+    } finally {
+      setTemplatesLoading(false)
     }
   }, [])
 
@@ -81,10 +95,11 @@ const TasksPage = () => {
   }, [tasks, categoryId, priority, searchQuery])
 
   // Load data on mount
-  useEffect(() => {
+useEffect(() => {
     loadTasks()
     loadCategories()
-  }, [loadTasks, loadCategories])
+    loadTemplates()
+  }, [loadTasks, loadCategories, loadTemplates])
 
   // Task operations
   const handleCreateTask = async (taskData) => {
@@ -169,6 +184,14 @@ const TasksPage = () => {
     } else {
       return handleCreateTask(taskData)
     }
+}
+
+  // Template handlers
+  const handleApplyTemplate = (template) => {
+    if (taskFormRef && taskFormRef.applyTemplate) {
+      taskFormRef.applyTemplate(template)
+      toast.success('Template applied successfully!')
+    }
   }
 
   // Search handler
@@ -219,12 +242,13 @@ const TasksPage = () => {
       </div>
 
       {/* Task Modal */}
-      <TaskModal
+<TaskModal
         isOpen={isModalOpen}
         onClose={handleCloseModal}
         onSubmit={handleSubmitTask}
         categories={categories}
         task={editingTask}
+        onApplyTemplate={handleApplyTemplate}
       />
     </div>
   )

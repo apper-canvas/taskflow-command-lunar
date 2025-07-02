@@ -4,7 +4,7 @@ import Input from '@/components/atoms/Input'
 import Select from '@/components/atoms/Select'
 import Button from '@/components/atoms/Button'
 
-const TaskForm = ({ onSubmit, onCancel, categories, initialData = null }) => {
+const TaskForm = ({ onSubmit, onCancel, categories, initialData = null, onApplyTemplate }) => {
   const [formData, setFormData] = useState({
     title: initialData?.title || '',
     description: initialData?.description || '',
@@ -16,6 +16,21 @@ const TaskForm = ({ onSubmit, onCancel, categories, initialData = null }) => {
   const [errors, setErrors] = useState({})
   const [isSubmitting, setIsSubmitting] = useState(false)
 
+  const applyTemplate = (template) => {
+    setFormData({
+      title: template.title || '',
+      description: template.description || '',
+      categoryId: template.categoryId || '',
+      priority: template.priority || 'medium',
+      dueDate: template.dueDate ? new Date(template.dueDate).toISOString().split('T')[0] : ''
+    })
+    setErrors({})
+  }
+
+  // Expose applyTemplate to parent component
+  React.useImperativeHandle(onApplyTemplate, () => ({
+    applyTemplate
+  }), [])
   const priorityOptions = [
     { value: 'high', label: 'High Priority' },
     { value: 'medium', label: 'Medium Priority' },

@@ -1,0 +1,52 @@
+[
+  {
+    "Id": 1,
+    "name": "Weekly Report",
+    "title": "Weekly Report - Week of [Date]",
+    "description": "Compile and review weekly progress report including:\n- Key accomplishments\n- Challenges faced\n- Upcoming priorities\n- Metrics and KPIs",
+    "categoryId": 1,
+    "priority": "medium",
+    "dueDate": null,
+    "createdAt": "2024-12-01T10:00:00.000Z"
+  },
+  {
+    "Id": 2,
+    "name": "Daily Standup Prep",
+    "title": "Prepare for Daily Standup",
+    "description": "Review yesterday's work and prepare standup updates:\n- What I did yesterday\n- What I plan to do today\n- Any blockers or impediments",
+    "categoryId": 1,
+    "priority": "low",
+    "dueDate": null,
+    "createdAt": "2024-12-01T10:30:00.000Z"
+  },
+  {
+    "Id": 3,
+    "name": "Code Review",
+    "title": "Code Review - [Feature/PR Name]",
+    "description": "Review pull request for quality, functionality, and adherence to coding standards:\n- Check code logic and efficiency\n- Verify test coverage\n- Ensure documentation is updated\n- Test functionality",
+    "categoryId": 2,
+    "priority": "high",
+    "dueDate": null,
+    "createdAt": "2024-12-01T11:00:00.000Z"
+  },
+  {
+    "Id": 4,
+    "name": "Team Meeting",
+    "title": "Team Meeting - [Topic]",
+    "description": "Schedule and prepare for team meeting:\n- Set agenda\n- Prepare talking points\n- Send calendar invites\n- Prepare presentation materials",
+    "categoryId": 3,
+    "priority": "medium",
+    "dueDate": null,
+    "createdAt": "2024-12-01T11:30:00.000Z"
+  },
+  {
+    "Id": 5,
+    "name": "Monthly Expense Report",
+    "title": "Monthly Expense Report - [Month Year]",
+    "description": "Compile and submit monthly expense report:\n- Gather all receipts\n- Categorize expenses\n- Fill out expense form\n- Submit for approval",
+    "categoryId": 4,
+    "priority": "low",
+    "dueDate": null,
+    "createdAt": "2024-12-01T12:00:00.000Z"
+  }
+]

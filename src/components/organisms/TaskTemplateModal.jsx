@@ -32,8 +32,7 @@ const TaskTemplateModal = ({ isOpen, onClose, onApplyTemplate, categories }) => 
     { value: '', label: 'Select a category' },
     ...categories.map(cat => ({ value: cat.Id, label: cat.name }))
   ]
-
-  useEffect(() => {
+useEffect(() => {
     if (isOpen) {
       loadTemplates()
       setView('gallery')
@@ -42,6 +41,24 @@ const TaskTemplateModal = ({ isOpen, onClose, onApplyTemplate, categories }) => 
     }
   }, [isOpen])
 
+  // Keyboard shortcut for saving templates
+  useEffect(() => {
+    const handleKeyboard = (e) => {
+      if (!isOpen) return
+      
+      if (e.ctrlKey && e.key === 's' && (view === 'create' || view === 'edit')) {
+        e.preventDefault()
+        // Trigger form submission
+        const form = document.querySelector('form')
+        if (form) {
+          form.requestSubmit()
+        }
+      }
+    }
+
+    document.addEventListener('keydown', handleKeyboard)
+    return () => document.removeEventListener('keydown', handleKeyboard)
+  }, [isOpen, view])
   const loadTemplates = async () => {
     try {
       setLoading(true)
@@ -65,7 +82,7 @@ const TaskTemplateModal = ({ isOpen, onClose, onApplyTemplate, categories }) => 
       priority: 'medium',
       dueDate: ''
     })
-  }
+}
 
   const handleCreateTemplate = async (e) => {
     e.preventDefault()
@@ -73,17 +90,16 @@ const TaskTemplateModal = ({ isOpen, onClose, onApplyTemplate, categories }) => 
       toast.error('Template name is required')
       return
     }
-
     try {
       const templateData = {
         ...formData,
         categoryId: formData.categoryId ? parseInt(formData.categoryId) : null
       }
-      const newTemplate = await templateService.create(templateData)
+const newTemplate = await templateService.create(templateData)
       setTemplates(prev => [newTemplate, ...prev])
       setView('gallery')
       resetForm()
-      toast.success('Template created successfully!')
+      toast.success('Template created successfully! (Ctrl+S)')
     } catch (error) {
       toast.error('Failed to create template')
     }
@@ -101,12 +117,12 @@ const TaskTemplateModal = ({ isOpen, onClose, onApplyTemplate, categories }) => 
         ...formData,
         categoryId: formData.categoryId ? parseInt(formData.categoryId) : null
       }
-      const updatedTemplate = await templateService.update(editingTemplate.Id, templateData)
+const updatedTemplate = await templateService.update(editingTemplate.Id, templateData)
       setTemplates(prev => prev.map(t => t.Id === editingTemplate.Id ? updatedTemplate : t))
       setView('gallery')
       setEditingTemplate(null)
       resetForm()
-      toast.success('Template updated successfully!')
+      toast.success('Template updated successfully! (Ctrl+S)')
     } catch (error) {
       toast.error('Failed to update template')
     }

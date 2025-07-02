@@ -1,8 +1,8 @@
-import React, { useState } from 'react'
-import { motion } from 'framer-motion'
-import Input from '@/components/atoms/Input'
-import Select from '@/components/atoms/Select'
-import Button from '@/components/atoms/Button'
+import React, { useEffect, useState } from "react";
+import { motion } from "framer-motion";
+import Select from "@/components/atoms/Select";
+import Input from "@/components/atoms/Input";
+import Button from "@/components/atoms/Button";
 
 const TaskForm = ({ onSubmit, onCancel, categories, initialData = null, onApplyTemplate }) => {
   const [formData, setFormData] = useState({
@@ -55,15 +55,17 @@ const TaskForm = ({ onSubmit, onCancel, categories, initialData = null, onApplyT
 
     setErrors(newErrors)
     return Object.keys(newErrors).length === 0
-  }
+}
 
   const handleSubmit = async (e) => {
     e.preventDefault()
     
     if (!validateForm()) return
     
-    setIsSubmitting(true)
+    // Prevent double submission from keyboard shortcut
+    if (isSubmitting) return
     
+setIsSubmitting(true)
     try {
       const submitData = {
         ...formData,
@@ -79,14 +81,31 @@ const TaskForm = ({ onSubmit, onCancel, categories, initialData = null, onApplyT
     }
   }
 
+  // Keyboard shortcut for saving forms
+  useEffect(() => {
+    const handleKeyboard = (e) => {
+      if (e.ctrlKey && e.key === 's') {
+        e.preventDefault()
+        // Don't submit if already submitting or if there are validation errors
+        if (!isSubmitting && validateForm()) {
+          const form = document.querySelector('form')
+          if (form) {
+            form.requestSubmit()
+          }
+        }
+      }
+    }
+
+    document.addEventListener('keydown', handleKeyboard)
+    return () => document.removeEventListener('keydown', handleKeyboard)
+  }, [isSubmitting])
   const handleChange = (field, value) => {
     setFormData(prev => ({ ...prev, [field]: value }))
     if (errors[field]) {
       setErrors(prev => ({ ...prev, [field]: null }))
     }
   }
-
-  return (
+return (
     <motion.form
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}

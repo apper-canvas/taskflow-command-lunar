@@ -37,7 +37,7 @@ const formatDateTime = (date, isRequired = false) => {
 };
 
 export const taskService = {
-  async getAll() {
+  async getAll(filters = {}) {
     try {
       const params = {
         fields: [
@@ -59,6 +59,75 @@ export const taskService = {
         ],
         orderBy: [{ fieldName: "CreatedOn", sorttype: "DESC" }]
       };
+
+      // Build where clauses based on filters
+      const whereConditions = [];
+      
+      // Filter by categoryId (Lookup field - use integer)
+      if (filters.categoryId !== undefined && filters.categoryId !== null) {
+        whereConditions.push({
+          FieldName: "categoryId",
+          Operator: "EqualTo",
+          Values: [parseInt(filters.categoryId)]
+        });
+      }
+      
+      // Filter by priority (Picklist field - use string)
+      if (filters.priority) {
+        whereConditions.push({
+          FieldName: "priority",
+          Operator: "EqualTo",
+          Values: [filters.priority]
+        });
+      }
+      
+      // Filter by completed status (Checkbox field - use string)
+      if (filters.completed !== undefined) {
+        whereConditions.push({
+          FieldName: "completed",
+          Operator: "EqualTo",
+          Values: [filters.completed]
+        });
+      }
+      
+      // Filter by due date range (DateTime field - use ISO strings)
+      if (filters.dueDate) {
+        if (filters.dueDate.before) {
+          whereConditions.push({
+            FieldName: "dueDate",
+            Operator: "LessThan",
+            Values: [new Date(filters.dueDate.before).toISOString()]
+          });
+        }
+        if (filters.dueDate.after) {
+          whereConditions.push({
+            FieldName: "dueDate",
+            Operator: "GreaterThan",
+            Values: [new Date(filters.dueDate.after).toISOString()]
+          });
+        }
+      }
+      
+      // Add where conditions to params if any exist
+      if (whereConditions.length > 0) {
+        params.where = whereConditions;
+      }
+      
+      // Handle search query with whereGroups for OR logic
+      if (filters.search) {
+        params.whereGroups = [{
+          operator: "OR",
+          subGroups: [
+            {
+              operator: "OR",
+              conditions: [
+                { fieldName: "title", operator: "Contains", values: [filters.search], include: true },
+                { fieldName: "description", operator: "Contains", values: [filters.search], include: true }
+              ]
+            }
+          ]
+        }];
+      }
       
       const response = await apperClient.fetchRecords('task', params);
       

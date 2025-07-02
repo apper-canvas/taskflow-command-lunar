@@ -8,12 +8,10 @@ const apperClient = new ApperClient({
 const formatDateTime = (date) => {
   if (!date) return null;
   const d = new Date(date);
-  return d.getFullYear() + '-' + 
-         String(d.getMonth() + 1).padStart(2, '0') + '-' + 
-         String(d.getDate()).padStart(2, '0') + 'T' + 
-         String(d.getHours()).padStart(2, '0') + ':' + 
-         String(d.getMinutes()).padStart(2, '0') + ':' + 
-         String(d.getSeconds()).padStart(2, '0');
+  // Check if date is valid
+  if (isNaN(d.getTime())) return null;
+  // Return ISO 8601 format with timezone
+  return d.toISOString();
 };
 
 export const taskService = {

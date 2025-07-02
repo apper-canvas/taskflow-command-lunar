@@ -461,17 +461,13 @@ Id: parseInt(id),
     }
   },
 
-  async getTodaysProgress() {
+async getTodaysProgress() {
     try {
-      const today = new Date();
-      const todayStart = new Date(today.getFullYear(), today.getMonth(), today.getDate());
-      
-const params = {
+      const params = {
         fields: [
           { field: { Name: "completed" } },
           { field: { Name: "CreatedOn" } }
-        ],
-        where: [{ FieldName: "CreatedOn", Operator: "RelativeMatch", Values: ["Today"] }]
+        ]
       };
       
       const response = await apperClient.fetchRecords('task', params);
@@ -481,16 +477,16 @@ const params = {
         return { completed: 0, total: 0 };
       }
       
-      const todaysTasks = response.data || [];
-      const completed = todaysTasks.filter(task => task.completed === 'true').length;
+      const allTasks = response.data || [];
+      const completed = allTasks.filter(task => task.completed === 'true').length;
       
       return {
         completed,
-        total: todaysTasks.length
+        total: allTasks.length
       };
     } catch (error) {
       if (error?.response?.data?.message) {
-        console.error("Error getting today's progress:", error?.response?.data?.message);
+        console.error("Error getting progress:", error?.response?.data?.message);
       } else {
         console.error(error.message);
       }
@@ -498,14 +494,13 @@ const params = {
     }
   },
 
-  async getWeeklyCompletionRate() {
+async getWeeklyCompletionRate() {
     try {
-const params = {
+      const params = {
         fields: [
           { field: { Name: "completed" } },
           { field: { Name: "CreatedOn" } }
-        ],
-        where: [{ FieldName: "CreatedOn", Operator: "RelativeMatch", Values: ["last 7 days"] }]
+        ]
       };
       
       const response = await apperClient.fetchRecords('task', params);
@@ -515,14 +510,14 @@ const params = {
         return 0;
       }
       
-      const weeklyTasks = response.data || [];
-      if (weeklyTasks.length === 0) return 0;
+      const allTasks = response.data || [];
+      if (allTasks.length === 0) return 0;
       
-      const completedTasks = weeklyTasks.filter(task => task.completed === 'true').length;
-      return Math.round((completedTasks / weeklyTasks.length) * 100);
+      const completedTasks = allTasks.filter(task => task.completed === 'true').length;
+      return Math.round((completedTasks / allTasks.length) * 100);
     } catch (error) {
       if (error?.response?.data?.message) {
-        console.error("Error getting weekly completion rate:", error?.response?.data?.message);
+        console.error("Error getting completion rate:", error?.response?.data?.message);
       } else {
         console.error(error.message);
       }

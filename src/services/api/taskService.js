@@ -118,7 +118,7 @@ export const taskService = {
     }
   },
 
-  async create(taskData) {
+async create(taskData) {
     try {
       const params = {
 records: [{
@@ -130,7 +130,7 @@ Name: taskData.Name || taskData.title,
           priority: taskData.priority,
           dueDate: taskData.dueDate ? new Date(taskData.dueDate).toISOString() : null,
           completed: taskData.completed || 'false',
-          createdAt: formatDateTime(taskData.createdAt || new Date(), true),
+          createdAt: new Date(taskData.createdAt || new Date()).toISOString(),
           completedAt: taskData.completedAt ? new Date(taskData.completedAt).toISOString() : null,
           categoryId: parseInt(taskData.categoryId)
         }]
@@ -164,7 +164,7 @@ Name: taskData.Name || taskData.title,
     }
   },
 
-  async update(id, taskData) {
+async update(id, taskData) {
     try {
       const params = {
 records: [{

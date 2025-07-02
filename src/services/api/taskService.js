@@ -4,6 +4,17 @@ const apperClient = new ApperClient({
   apperProjectId: import.meta.env.VITE_APPER_PROJECT_ID,
   apperPublicKey: import.meta.env.VITE_APPER_PUBLIC_KEY
 });
+// Helper function to format DateTime for Apper backend
+const formatDateTime = (date) => {
+  if (!date) return null;
+  const d = new Date(date);
+  return d.getFullYear() + '-' + 
+         String(d.getMonth() + 1).padStart(2, '0') + '-' + 
+         String(d.getDate()).padStart(2, '0') + 'T' + 
+         String(d.getHours()).padStart(2, '0') + ':' + 
+         String(d.getMinutes()).padStart(2, '0') + ':' + 
+         String(d.getSeconds()).padStart(2, '0');
+};
 
 export const taskService = {
   async getAll() {
@@ -96,10 +107,10 @@ export const taskService = {
           Owner: taskData.Owner,
           title: taskData.title,
           description: taskData.description,
-          priority: taskData.priority,
+priority: taskData.priority,
           dueDate: taskData.dueDate,
           completed: taskData.completed || 'false',
-          createdAt: taskData.createdAt || new Date().toISOString(),
+          createdAt: formatDateTime(taskData.createdAt || new Date()),
           completedAt: taskData.completedAt,
           categoryId: parseInt(taskData.categoryId)
         }]
@@ -143,10 +154,10 @@ export const taskService = {
           Owner: taskData.Owner,
           title: taskData.title,
           description: taskData.description,
-          priority: taskData.priority,
+priority: taskData.priority,
           dueDate: taskData.dueDate,
           completed: taskData.completed,
-          createdAt: taskData.createdAt,
+          createdAt: formatDateTime(taskData.createdAt),
           completedAt: taskData.completedAt,
           categoryId: parseInt(taskData.categoryId)
         }]

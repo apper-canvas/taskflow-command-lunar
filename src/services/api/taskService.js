@@ -121,17 +121,17 @@ export const taskService = {
   async create(taskData) {
     try {
       const params = {
-        records: [{
+records: [{
 Name: taskData.Name || taskData.title,
           Tags: taskData.Tags || '',
           Owner: taskData.Owner,
           title: taskData.title,
           description: taskData.description,
           priority: taskData.priority,
-          dueDate: taskData.dueDate ? new Date(taskData.dueDate).toISOString().slice(0, 19) : null,
+          dueDate: taskData.dueDate ? new Date(taskData.dueDate).toISOString() : null,
           completed: taskData.completed || 'false',
-          createdAt: (taskData.createdAt || new Date()).toISOString().slice(0, 19),
-          completedAt: taskData.completedAt ? new Date(taskData.completedAt).toISOString().slice(0, 19) : null,
+          createdAt: formatDateTime(taskData.createdAt || new Date(), true),
+          completedAt: taskData.completedAt ? new Date(taskData.completedAt).toISOString() : null,
           categoryId: parseInt(taskData.categoryId)
         }]
       };
@@ -167,7 +167,7 @@ Name: taskData.Name || taskData.title,
   async update(id, taskData) {
     try {
       const params = {
-        records: [{
+records: [{
 Id: parseInt(id),
           Name: taskData.Name || taskData.title,
           Tags: taskData.Tags || '',
@@ -175,10 +175,10 @@ Id: parseInt(id),
           title: taskData.title,
           description: taskData.description,
           priority: taskData.priority,
-          dueDate: taskData.dueDate ? new Date(taskData.dueDate).toISOString().slice(0, 19) : null,
+          dueDate: taskData.dueDate ? new Date(taskData.dueDate).toISOString() : null,
           completed: taskData.completed,
-          createdAt: taskData.createdAt ? new Date(taskData.createdAt).toISOString().slice(0, 19) : null,
-          completedAt: taskData.completedAt ? new Date(taskData.completedAt).toISOString().slice(0, 19) : null,
+          createdAt: taskData.createdAt ? new Date(taskData.createdAt).toISOString() : null,
+          completedAt: taskData.completedAt ? new Date(taskData.completedAt).toISOString() : null,
           categoryId: parseInt(taskData.categoryId)
         }]
       };

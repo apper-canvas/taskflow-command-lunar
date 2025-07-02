@@ -122,16 +122,16 @@ export const taskService = {
     try {
       const params = {
         records: [{
-          Name: taskData.Name || taskData.title,
+Name: taskData.Name || taskData.title,
           Tags: taskData.Tags || '',
           Owner: taskData.Owner,
           title: taskData.title,
           description: taskData.description,
-priority: taskData.priority,
-          dueDate: taskData.dueDate,
+          priority: taskData.priority,
+          dueDate: taskData.dueDate ? new Date(taskData.dueDate).toISOString().slice(0, 19) : null,
           completed: taskData.completed || 'false',
-          createdAt: formatDateTime(taskData.createdAt || new Date()),
-          completedAt: taskData.completedAt,
+          createdAt: (taskData.createdAt || new Date()).toISOString().slice(0, 19),
+          completedAt: taskData.completedAt ? new Date(taskData.completedAt).toISOString().slice(0, 19) : null,
           categoryId: parseInt(taskData.categoryId)
         }]
       };
@@ -168,17 +168,17 @@ priority: taskData.priority,
     try {
       const params = {
         records: [{
-          Id: parseInt(id),
+Id: parseInt(id),
           Name: taskData.Name || taskData.title,
           Tags: taskData.Tags || '',
           Owner: taskData.Owner,
           title: taskData.title,
           description: taskData.description,
-priority: taskData.priority,
-          dueDate: taskData.dueDate,
+          priority: taskData.priority,
+          dueDate: taskData.dueDate ? new Date(taskData.dueDate).toISOString().slice(0, 19) : null,
           completed: taskData.completed,
-          createdAt: formatDateTime(taskData.createdAt),
-          completedAt: taskData.completedAt,
+          createdAt: taskData.createdAt ? new Date(taskData.createdAt).toISOString().slice(0, 19) : null,
+          completedAt: taskData.completedAt ? new Date(taskData.completedAt).toISOString().slice(0, 19) : null,
           categoryId: parseInt(taskData.categoryId)
         }]
       };

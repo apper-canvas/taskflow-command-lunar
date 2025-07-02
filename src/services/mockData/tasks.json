@@ -1,0 +1,79 @@
+[
+  {
+    "Id": 1,
+    "title": "Complete project proposal",
+    "description": "Finish the Q4 project proposal document and submit to stakeholders",
+    "categoryId": 1,
+    "priority": "high",
+    "dueDate": "2024-12-15T09:00:00.000Z",
+    "completed": false,
+    "createdAt": "2024-12-01T10:30:00.000Z",
+    "completedAt": null
+  },
+  {
+    "Id": 2,
+    "title": "Review design mockups",
+    "description": "Review and provide feedback on the new dashboard design mockups",
+    "categoryId": 2,
+    "priority": "medium",
+    "dueDate": "2024-12-12T14:00:00.000Z",
+    "completed": false,
+    "createdAt": "2024-12-02T08:15:00.000Z",
+    "completedAt": null
+  },
+  {
+    "Id": 3,
+    "title": "Update team documentation",
+    "description": "Update the team wiki with recent process changes and new guidelines",
+    "categoryId": 1,
+    "priority": "low",
+    "dueDate": null,
+    "completed": true,
+    "createdAt": "2024-11-28T16:45:00.000Z",
+    "completedAt": "2024-12-01T11:20:00.000Z"
+  },
+  {
+    "Id": 4,
+    "title": "Schedule team meeting",
+    "description": "Organize weekly team sync meeting and send calendar invites",
+    "categoryId": 3,
+    "priority": "medium",
+    "dueDate": "2024-12-10T10:00:00.000Z",
+    "completed": false,
+    "createdAt": "2024-12-03T09:00:00.000Z",
+    "completedAt": null
+  },
+  {
+    "Id": 5,
+    "title": "Prepare presentation slides",
+    "description": "Create slides for the quarterly business review presentation",
+    "categoryId": 1,
+    "priority": "high",
+    "dueDate": "2024-12-14T13:00:00.000Z",
+    "completed": false,
+    "createdAt": "2024-12-02T14:20:00.000Z",
+    "completedAt": null
+  },
+  {
+    "Id": 6,
+    "title": "Code review for feature branch",
+    "description": "Review pull request for the new authentication feature",
+    "categoryId": 2,
+    "priority": "high",
+    "dueDate": "2024-12-11T16:00:00.000Z",
+    "completed": false,
+    "createdAt": "2024-12-03T11:30:00.000Z",
+    "completedAt": null
+  },
+  {
+    "Id": 7,
+    "title": "Order office supplies",
+    "description": "Restock printer paper, pens, and other office essentials",
+    "categoryId": 4,
+    "priority": "low",
+    "dueDate": null,
+    "completed": false,
+    "createdAt": "2024-12-01T13:45:00.000Z",
+    "completedAt": null
+  }
+]

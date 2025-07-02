@@ -3,7 +3,7 @@ import { motion } from 'framer-motion'
 import Button from '@/components/atoms/Button'
 import SearchBar from '@/components/molecules/SearchBar'
 import ApperIcon from '@/components/ApperIcon'
-
+import StatisticsCards from '@/components/molecules/StatisticsCards'
 const Header = ({ onAddTask, onSearch, totalTasks, completedTasks }) => {
   const completionRate = totalTasks > 0 ? Math.round((completedTasks / totalTasks) * 100) : 0
 
@@ -50,7 +50,9 @@ const Header = ({ onAddTask, onSearch, totalTasks, completedTasks }) => {
               Add Task
             </Button>
           </div>
-        </div>
+</div>
+        
+        <StatisticsCards />
         
         <div className="max-w-md">
           <SearchBar

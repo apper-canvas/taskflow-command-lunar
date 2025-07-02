@@ -94,7 +94,52 @@ export const taskService = {
       completedAt: !currentTask.completed ? new Date().toISOString() : null
     }
     
-    tasks[index] = updatedTask
+tasks[index] = updatedTask
     return { ...updatedTask }
+  },
+
+  async getTodaysProgress() {
+    await delay(200)
+    const today = new Date()
+    const todayStart = new Date(today.getFullYear(), today.getMonth(), today.getDate())
+    const todayEnd = new Date(todayStart.getTime() + 24 * 60 * 60 * 1000)
+    
+    const todaysTasks = tasks.filter(task => {
+      const createdAt = new Date(task.createdAt)
+      return createdAt >= todayStart && createdAt < todayEnd
+    })
+    
+    const completed = todaysTasks.filter(task => task.completed).length
+    
+    return {
+      completed,
+      total: todaysTasks.length
+    }
+  },
+
+  async getWeeklyCompletionRate() {
+    await delay(200)
+    const now = new Date()
+    const weekAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000)
+    
+    const weeklyTasks = tasks.filter(task => {
+      const createdAt = new Date(task.createdAt)
+      return createdAt >= weekAgo && createdAt <= now
+    })
+    
+    if (weeklyTasks.length === 0) return 0
+    
+    const completedTasks = weeklyTasks.filter(task => task.completed).length
+    return Math.round((completedTasks / weeklyTasks.length) * 100)
+  },
+
+  async getOverdueTasks() {
+    await delay(200)
+    const now = new Date()
+    return tasks.filter(task => {
+      if (task.completed || !task.dueDate) return false
+      const dueDate = new Date(task.dueDate)
+      return dueDate < now
+    })
   }
 }

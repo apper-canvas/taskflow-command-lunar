@@ -5,11 +5,33 @@ const apperClient = new ApperClient({
   apperPublicKey: import.meta.env.VITE_APPER_PUBLIC_KEY
 });
 // Helper function to format DateTime for Apper backend
-const formatDateTime = (date) => {
+const formatDateTime = (date, isRequired = false) => {
+  // If no date provided and it's a required field, use current timestamp
+  if (!date && isRequired) {
+    return new Date().toISOString();
+  }
+  
+  // If no date provided and not required, return null
   if (!date) return null;
-  const d = new Date(date);
+  
+  let d;
+  
+  // Handle different input types
+  if (date instanceof Date) {
+    d = date;
+  } else if (typeof date === 'string' || typeof date === 'number') {
+    d = new Date(date);
+  } else {
+    // Invalid input type, use current date if required
+    return isRequired ? new Date().toISOString() : null;
+  }
+  
   // Check if date is valid
-  if (isNaN(d.getTime())) return null;
+  if (isNaN(d.getTime())) {
+    // Invalid date, use current date if required
+    return isRequired ? new Date().toISOString() : null;
+  }
+  
   // Return ISO 8601 format with timezone
   return d.toISOString();
 };

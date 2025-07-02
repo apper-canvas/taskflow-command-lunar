@@ -466,12 +466,12 @@ Id: parseInt(id),
       const today = new Date();
       const todayStart = new Date(today.getFullYear(), today.getMonth(), today.getDate());
       
-      const params = {
+const params = {
         fields: [
           { field: { Name: "completed" } },
-          { field: { Name: "createdAt" } }
+          { field: { Name: "CreatedOn" } }
         ],
-        where: [{ FieldName: "createdAt", Operator: "RelativeMatch", Values: ["Today"] }]
+        where: [{ FieldName: "CreatedOn", Operator: "RelativeMatch", Values: ["Today"] }]
       };
       
       const response = await apperClient.fetchRecords('task', params);
@@ -500,12 +500,12 @@ Id: parseInt(id),
 
   async getWeeklyCompletionRate() {
     try {
-      const params = {
+const params = {
         fields: [
           { field: { Name: "completed" } },
-          { field: { Name: "createdAt" } }
+          { field: { Name: "CreatedOn" } }
         ],
-        where: [{ FieldName: "createdAt", Operator: "RelativeMatch", Values: ["last 7 days"] }]
+        where: [{ FieldName: "CreatedOn", Operator: "RelativeMatch", Values: ["last 7 days"] }]
       };
       
       const response = await apperClient.fetchRecords('task', params);
